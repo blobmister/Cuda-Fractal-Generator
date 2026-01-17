@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -9,7 +9,7 @@ project(Julia LANGUAGES CXX CUDA)
 
 enable_language(CUDA)
 
-add_executable(main main.cxx)
+add_executable(main main.cu)
 
 add_library(head INTERFACE)
 
@@ -23,7 +23,7 @@ target_sources(head
     INTERFACE
         FILE_SET HEADERS
         FILES
-            complex.h
+            complex.cuh
 )
 
 target_link_libraries(main
