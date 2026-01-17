@@ -1,4 +1,4 @@
-# Install script for directory: /home/krish/julia-fractal
+# Install script for directory: /home/krish/Julia-frac
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/krish/julia-fractal/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/krish/Julia-frac/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

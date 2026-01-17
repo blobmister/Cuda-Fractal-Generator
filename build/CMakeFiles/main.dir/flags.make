@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/krish/julia-fractal
+CXX_INCLUDES = -I/home/krish/Julia-frac
 
 CXX_FLAGS = -std=c++23
 

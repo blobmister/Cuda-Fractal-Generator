@@ -1,8 +1,8 @@
 [
 {
-  "directory": "/home/krish/julia-fractal/build",
-  "command": "/usr/bin/c++  -I/home/krish/julia-fractal -std=c++23 -o CMakeFiles/main.dir/main.cxx.o -c /home/krish/julia-fractal/main.cxx",
-  "file": "/home/krish/julia-fractal/main.cxx",
+  "directory": "/home/krish/Julia-frac/build",
+  "command": "/usr/bin/c++  -I/home/krish/Julia-frac -std=c++23 -o CMakeFiles/main.dir/main.cxx.o -c /home/krish/Julia-frac/main.cxx",
+  "file": "/home/krish/Julia-frac/main.cxx",
   "output": "CMakeFiles/main.dir/main.cxx.o"
 }
 ]
