@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <chrono>
+#include <fstream>
 
 #include "complex.cuh"
 #include "fractal.cuh"
@@ -19,10 +20,20 @@ struct ImageData {
     double scale;
     int depth;
     int sampleNum;
+    float colorFreq;
 };
 
 using color = struct Color;
 using imageData = struct ImageData;
+
+/*
+* Helper function to calculate colour values
+*/
+__device__ void map_color(float t, float freq, Color* c) {
+    c->r = (int)((sin(freq * t + 0.0f) * 0.5f + 0.5f) * 255);
+    c->g = (int)((sin(freq * t + 2.0f) * 0.5f + 0.5f) * 255);
+    c->b = (int)((sin(freq * t + 4.0f) * 0.5f + 0.5f) * 255);
+}
 
 /*
 * Kernel code that is run on GPU. 
@@ -37,7 +48,7 @@ __global__ static void kernel(Color* ptr, Fractal f, imageData d) {
     if (j >= d.dim || i >= d.dim) return;
     int offset = j + i * d.dim;
 
-    float total_hits = 0.0f;
+    float total_iterations = 0.0f;
 
     for (int sub_y = 0; sub_y < d.sampleNum; ++sub_y) {
         for (int sub_x = 0; sub_x < d.sampleNum; ++sub_x) {
@@ -51,21 +62,24 @@ __global__ static void kernel(Color* ptr, Fractal f, imageData d) {
             float jx = d.scale * ((d.dim * 1.0f) / 2.0f - coord_x) / ((d.dim * 1.0f) / 2.0f);
             float jy = d.scale * ((d.dim * 1.0f) / 2.0f - coord_y) / ((d.dim * 1.0f) / 2.0f);
 
-            bool inside = f.generate(jx, jy);
-            if (inside) total_hits += 1.0f;
+            total_iterations += f.generate(jx, jy);
         }
     }
 
-    float intensity = total_hits / (d.sampleNum * d.sampleNum);
+    float avg_iter = total_iterations / (d.sampleNum * d.sampleNum);
 
-    ptr[offset].r = 3 * intensity;
-    ptr[offset].g = 78 * intensity;
-    ptr[offset].b = 252 * intensity;
+    if (avg_iter >= d.depth * 0.99f) {
+        ptr[offset].r = 0;
+        ptr[offset].g = 0;
+        ptr[offset].b = 0;
+    } else {
+        map_color(avg_iter, d.colorFreq, &ptr[offset]);
+    }
 }
 
 class Renderer {
     public:
-        Renderer(imageData data) : d(data) {}
+        Renderer(imageData data, std::string filename) : d(data), filename(filename) {}
 
         template <typename Fractal>
         void render(Fractal f) {
@@ -103,16 +117,25 @@ class Renderer {
 
     private:
         imageData d;
+        std::string filename;
 
         void PPM_render(std::vector<color>& bitmap) {
-            std::cout << "P3\n" << d.dim << " " << d.dim << "\n255\n";
-            for (int i{}; i < d.dim * d.dim; ++i) {
-                std::cout << bitmap[i].r << " " << bitmap[i].g << " " << bitmap[i].b << '\n';
+            std::ofstream file(filename, std::ios::binary);
+
+            file << "P6\n" << d.dim << " " << d.dim << "\n255\n";
+            
+            std::vector<unsigned char> buffer;
+            buffer.reserve(d.dim * d.dim * 3);
+
+            for (const auto& c : bitmap) {
+                buffer.push_back((unsigned char)c.r);
+                buffer.push_back((unsigned char)c.g);
+                buffer.push_back((unsigned char)c.b);
             }
+
+            file.write(reinterpret_cast<char*>(buffer.data()), buffer.size());
+            file.close();
         }
-
-
-        
 };
 
 
