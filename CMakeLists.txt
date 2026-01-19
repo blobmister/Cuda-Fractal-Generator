@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+## Replace with speciric architecture number
+set(CMAKE_CUDA_ARCHITECTURES native)
+
 project(Julia LANGUAGES CXX CUDA)
 
 enable_language(CUDA)
@@ -24,6 +27,8 @@ target_sources(head
         FILE_SET HEADERS
         FILES
             complex.cuh
+            fractal.cuh
+            render.cuh
 )
 
 target_link_libraries(main

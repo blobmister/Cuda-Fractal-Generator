@@ -2,7 +2,6 @@
 #define COMPLEX_H
 
 #include <cuda_runtime.h>
-#include <cwctype>
 
 class complex {
 private:
@@ -34,7 +33,7 @@ public:
         return *this;
     }
 
-    __host__ __device__ double const mag_sq() const {
+    __host__ __device__ double mag_sq() const {
         return m_real * m_real + m_imag * m_imag;
     }
 
