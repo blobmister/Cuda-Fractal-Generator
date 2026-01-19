@@ -22,7 +22,7 @@ class Julia {
         Julia(complex c_const, double threshold, int depth) : 
         c_const(c_const), threshold(threshold), depth(depth) {};
 
-        __device__ int generate(float jx, float jy) {
+        __device__ int generate(double jx, double jy) {
             complex a(jx, jy);
 
             for (int w{}; w < depth; ++w) {

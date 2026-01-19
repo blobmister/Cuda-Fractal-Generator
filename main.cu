@@ -6,10 +6,10 @@
 
 
 // Image Setup
-int DIM = 10000;
+int DIM = 3000;
 double scale = 1.5;
 int sampleNum = 10;
-float colorFreq = 0.1f;
+float colorFreq = 0.001f;
 float r_phase = 0.0f;
 float g_phase = 2.0f;
 float b_phase = 4.0f;

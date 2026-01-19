@@ -34,8 +34,8 @@ using imageData = struct ImageData;
 */
 __device__ void map_color(float t, ImageData d, Color* c) {
     c->r = (int)((sin(d.colorFreq * t + d.r_phase) * 0.5f + 0.5f) * 255);
-    c->g = (int)((sin(d.colorFreq * t + d.r_phase) * 0.5f + 0.5f) * 255);
-    c->b = (int)((sin(d.colorFreq * t + d.r_phase) * 0.5f + 0.5f) * 255);
+    c->g = (int)((sin(d.colorFreq * t + d.g_phase) * 0.5f + 0.5f) * 255);
+    c->b = (int)((sin(d.colorFreq * t + d.b_phase) * 0.5f + 0.5f) * 255);
 }
 
 /*
