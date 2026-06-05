@@ -45,9 +45,10 @@ __device__ void map_color_wave(float t, ImageData d, Color* c) {
 }
 
 __device__ void map_color_glow(float t, ImageData d, Color* c) {
-    float n = logf(t + 1.0f) / logf((float)d.depth + 1.0f);
+	float max_t = (float)d.depth * 0.99f; // Required due to floating point cutoff in kernel function
+    float n = logf(t + 1.0f) / logf((float)max_t + 1.0f);
     
-    float intensity = powf(n, 1.5f); 
+    float intensity = powf(n, 1.5f) * 1.5f; 
     
     if (intensity > 1.0f) intensity = 1.0f;
     if (intensity < 0.0f) intensity = 0.0f;
