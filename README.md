@@ -9,6 +9,9 @@ cmake --build build
 Run ./build/main in order to generate fractal. Must have a ppm image viewer installed to view image (.png support work in progress).
 
 # Sample images
+Colouring function comprises of three sine waves (one for each colour), that outputs colour values as a function of iterations for that pixel. Users can edit the phase of these sine waves to create psychadelic colouring effects. 
+More colouring algorithms may be added in the future.
+
 ## Image 1
 Parmaters used:
 ```C++
