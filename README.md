@@ -8,8 +8,8 @@ cmake --build build
 ```
 Run ./build/main in order to generate fractal. Must have a ppm image viewer installed to view image (.png support work in progress).
 
-# Sample image
-## Julia Fractal
+# Sample images
+## Image 1
 Parmaters used:
 ```C++
 // Image Setup
@@ -29,5 +29,26 @@ int depth = 2000;
 double threshold = 1000;
 ```
 <img width="2000" height="2000" alt="image" src="https://github.com/user-attachments/assets/d10028ff-79d8-4205-97e2-8545ca01e80d" />
+
+## Image 2
+Paramters used:
+```C++
+// Image Setup
+int DIM = 1584;
+double scale = 1;
+int sampleNum = 10;
+float colorFreq = 0.005f;
+float r_phase = 2.0f;
+float g_phase = 2.0f;
+float b_phase = 2.0f;
+std::string filename = "image.ppm";
+
+// Fractal Setup
+complex c(0.285, 0.01);
+int depth = 3000;
+double threshold = 1000;
+```
+<img width="1584" height="1584" alt="image" src="https://github.com/user-attachments/assets/04e2017b-bf9e-4f31-9869-06a5aff9949b" />
+
 
 
