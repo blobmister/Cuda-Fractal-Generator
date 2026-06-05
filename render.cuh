@@ -9,6 +9,11 @@
 #include "complex.cuh"
 #include "fractal.cuh"
 
+enum class colourAlgos {
+	WAVE,
+	GLOW
+};
+
 struct Color {
     int r;
     int g;
@@ -24,6 +29,7 @@ struct ImageData {
     float r_phase;
     float g_phase;
     float b_phase;
+	colourAlgos algo;
 };
 
 using color = struct Color;
@@ -32,10 +38,23 @@ using imageData = struct ImageData;
 /*
 * Helper function to calculate colour values
 */
-__device__ void map_color(float t, ImageData d, Color* c) {
+__device__ void map_color_wave(float t, ImageData d, Color* c) {
     c->r = (int)((sin(d.colorFreq * t + d.r_phase) * 0.5f + 0.5f) * 255);
     c->g = (int)((sin(d.colorFreq * t + d.g_phase) * 0.5f + 0.5f) * 255);
     c->b = (int)((sin(d.colorFreq * t + d.b_phase) * 0.5f + 0.5f) * 255);
+}
+
+__device__ void map_color_glow(float t, ImageData d, Color* c) {
+    float n = logf(t + 1.0f) / logf((float)d.depth + 1.0f);
+    
+    float intensity = powf(n, 1.5f); 
+    
+    if (intensity > 1.0f) intensity = 1.0f;
+    if (intensity < 0.0f) intensity = 0.0f;
+    
+    c->r = (int)(d.r_phase + (255.0f - d.r_phase) * intensity);
+    c->g = (int)(d.g_phase + (255.0f - d.g_phase) * intensity);
+    c->b = (int)(d.b_phase + (255.0f - d.b_phase) * intensity);
 }
 
 /*
@@ -76,7 +95,14 @@ __global__ static void kernel(Color* ptr, Fractal f, imageData d) {
         ptr[offset].g = 0;
         ptr[offset].b = 0;
     } else {
-        map_color(avg_iter, d, &ptr[offset]);
+		switch (d.algo) {
+			case colourAlgos::WAVE:
+				map_color_wave(avg_iter, d, &ptr[offset]);
+				break;
+
+			case colourAlgos::GLOW:
+				map_color_glow(avg_iter, d, &ptr[offset]);	
+		}
     }
 }
 
