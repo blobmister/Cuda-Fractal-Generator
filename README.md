@@ -1,7 +1,7 @@
 A fractal generator running on GPU.
 
 # Usage
-Edit parameters in main.cu in order to customise fractal image, then to build project (CMake and CUDA toolkit Required),
+Edit parameters in main.cu in order to customise fractal image, then to build project. CMake and NVCC compiler are required. Ensure NVCC is added to your path.
 ```
 cmake -B build
 cmake --build build
